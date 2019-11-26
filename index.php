@@ -1,8 +1,29 @@
 <?php
 include ("conexion.php");
+// login 
+if(!empty($_POST)){
+    $usuario = mysqli_real_escape_string($conexion,$_POST['user']);
+    $password = mysqli_real_escape_string($conexion,$_POST['pass']);
+    $password_encriptada =  sha1($password);
+    $sql = "SELECT idusuario FROM usuario 
+              WHERE usuario = '$usuario' AND password = '$password_encriptada' " ; 
+    $resultado = $conexion->query($sql);
+    $rows = $resultado->num_rows;
+    if($rows > 0){
+        $row = $resultado->fetch_assoc();
+        $_SESSION['id_usuario'] = $row["idusuario"];
+        header("Location: admin.php");
+        
+    }else{
+        echo "<script>
+                        alert('Usuario o Password Incorrecto');
+                        window.location = 'index.php';
+                      </script>"; 
+    }
+    
+}
 
-
-//$this->_data = $this->_db->query(.....);
+// registrar usuario
 
 if(isset($_POST["registrar"])){
    $nombre = mysqli_real_escape_string($conexion,$_POST['nombre']);
@@ -117,14 +138,14 @@ if(isset($_POST["registrar"])){
 												<fieldset>
 													<label class="block clearfix">
 														<span class="block input-icon input-icon-right">
-															<input type="text" class="form-control"  name="user"placeholder="Usuario" />
+															<input type="text" class="form-control"  name="user"placeholder="Usuario" required />
 															<i class="ace-icon fa fa-user"></i>
 														</span>
 													</label>
 
 													<label class="block clearfix">
 														<span class="block input-icon input-icon-right">
-															<input type="password" name="pass"class="form-control" placeholder="Contraseña" />
+															<input type="password" name="pass"class="form-control" placeholder="Contraseña" required />
 															<i class="ace-icon fa fa-lock"></i>
 														</span>
 													</label>
