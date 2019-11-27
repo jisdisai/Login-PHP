@@ -1,5 +1,11 @@
 <?php
 include ("conexion.php");
+session_start();
+if(!isset($_SESSION['id_usuario'])){
+    header("Location: admin.php ");
+    
+}
+
 // login 
 if(!empty($_POST)){
     $usuario = mysqli_real_escape_string($conexion,$_POST['user']);
