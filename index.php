@@ -1,7 +1,7 @@
 <?php
 include ("conexion.php");
 session_start();
-if(!isset($_SESSION['id_usuario'])){
+if(isset($_SESSION['id_usuario'])){
     header("Location: admin.php ");
     
 }
@@ -70,6 +70,8 @@ if(isset($_POST["registrar"])){
     
     
 }
+
+
 
 ?>
 
